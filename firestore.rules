@@ -1,0 +1,57 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Un grupo se lee por su código; no se pueden listar todos los grupos.
+    match /groups/{code} {
+      function validGroup(d) {
+        return d.name is string && d.name.size() > 0 && d.name.size() <= 40
+          && d.priceLimit is number && d.priceLimit >= 1 && d.priceLimit <= 1000
+          && d.drawn is bool;
+      }
+
+      allow get: if true;
+      allow list: if false;
+      allow create: if code.size() == 6
+        && request.resource.data.keys().hasOnly(['name', 'priceLimit', 'drawn', 'adminId', 'createdAt'])
+        && request.resource.data.drawn == false
+        && request.resource.data.adminId is string
+        && validGroup(request.resource.data);
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['priceLimit', 'drawn'])
+        && validGroup(request.resource.data);
+      allow delete: if false;
+
+      function groupData() {
+        return get(/databases/$(database)/documents/groups/$(code)).data;
+      }
+
+      match /members/{memberId} {
+        function validMember(d) {
+          return d.name is string && d.name.size() > 0 && d.name.size() <= 30
+            && d.likes is list && d.likes.size() == 5;
+        }
+
+        allow read: if true;
+        // Solo se puede entrar antes del sorteo.
+        allow create: if groupData().drawn == false
+          && request.resource.data.keys().hasOnly(['name', 'likes', 'publicKey', 'joinedAt'])
+          && request.resource.data.publicKey is string && request.resource.data.publicKey.size() < 2000
+          && validMember(request.resource.data);
+        // Los gustos se pueden actualizar siempre; nombre y clave no.
+        allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes'])
+          && validMember(request.resource.data);
+        allow delete: if groupData().drawn == false;
+      }
+
+      // Cada asignación va cifrada con la clave pública de quien regala.
+      match /assignments/{memberId} {
+        allow read: if true;
+        allow create: if getAfter(/databases/$(database)/documents/groups/$(code)).data.drawn == true
+          && request.resource.data.keys().hasOnly(['cipher'])
+          && request.resource.data.cipher is string && request.resource.data.cipher.size() < 1000;
+        allow update: if false;
+        allow delete: if true;
+      }
+    }
+  }
+}

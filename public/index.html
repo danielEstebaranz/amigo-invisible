@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0078D4">
+  <title>Amigo Invisible</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230078D4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='8' width='18' height='4' rx='1'/><path d='M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5'/></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Pantalla de inicio: crear o unirse -->
+  <div id="view-home" class="view" hidden>
+    <header class="home-top">
+      <div class="logo"><span class="logo-mark" data-icon="gift"></span>Amigo Invisible</div>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Cambiar tema"></button>
+    </header>
+    <main class="home">
+      <section class="hero">
+        <p class="eyebrow">Sorteo entre amigos, familia o compañeros</p>
+        <h1>Cada uno en su móvil.<br>Nadie ve lo de los demás.</h1>
+        <p class="lead">Crea el grupo, comparte el enlace y que cada persona apunte sus 5 gustos. Tras el sorteo, cada uno descubre a quién regala, con ideas que encajan en el presupuesto.</p>
+        <ol class="steps">
+          <li><span data-icon="users"></span><div><b>Crea el grupo</b><small>Pon nombre y límite de precio</small></div></li>
+          <li><span data-icon="share"></span><div><b>Comparte el enlace</b><small>Por WhatsApp, correo o como quieras</small></div></li>
+          <li><span data-icon="shuffle"></span><div><b>Sortea</b><small>Cada uno ve solo su resultado, cifrado en su móvil</small></div></li>
+        </ol>
+      </section>
+
+      <section class="home-forms">
+        <form id="join-form" class="card" hidden>
+          <h2>Unirme a <span id="join-group-name">un grupo</span></h2>
+          <p class="muted" id="join-group-info"></p>
+          <label class="field"><span>Código del grupo</span>
+            <input id="join-code" maxlength="6" autocomplete="off" autocapitalize="characters" placeholder="ABC123" required></label>
+          <label class="field"><span>Tu nombre</span>
+            <input id="join-name" maxlength="30" autocomplete="given-name" placeholder="Cómo te conocen en el grupo" required></label>
+          <button class="btn primary full" type="submit">Entrar al grupo</button>
+          <p class="switch">¿Organizas tú? <button type="button" class="link" data-show="create-form">Crear un grupo nuevo</button></p>
+        </form>
+
+        <form id="create-form" class="card">
+          <h2>Crear un grupo</h2>
+          <label class="field"><span>Nombre del evento</span>
+            <input id="create-event" maxlength="40" placeholder="Navidad en familia" required></label>
+          <label class="field"><span>Tu nombre</span>
+            <input id="create-name" maxlength="30" autocomplete="given-name" placeholder="Organizador" required></label>
+          <label class="field"><span>Límite de precio</span>
+            <div class="price-input"><input id="create-price" type="number" min="1" max="1000" value="20" required><span>€</span></div>
+          </label>
+          <button class="btn primary full" type="submit">Crear grupo</button>
+          <p class="switch">¿Te han invitado? <button type="button" class="link" data-show="join-form">Unirme con un código</button></p>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <!-- App del grupo -->
+  <div id="view-group" class="view shell" hidden>
+    <aside class="sidebar">
+      <div class="logo"><span class="logo-mark" data-icon="gift"></span>Amigo Invisible</div>
+      <nav class="nav" role="tablist">
+        <button class="nav-item active" data-tab="grupo"><span data-icon="users"></span><span>Grupo</span></button>
+        <button class="nav-item" data-tab="perfil"><span data-icon="user"></span><span>Mi perfil</span></button>
+        <button class="nav-item" data-tab="amigo"><span data-icon="gift"></span><span>Mi amigo</span></button>
+      </nav>
+      <div class="sidebar-foot">
+        <button class="nav-item theme-toggle" type="button"></button>
+        <button class="nav-item leave-btn" type="button"><span data-icon="logout"></span><span>Salir del grupo</span></button>
+      </div>
+    </aside>
+
+    <div class="content">
+      <header class="group-head">
+        <div>
+          <p class="eyebrow" id="me-label"></p>
+          <h1 id="group-title">…</h1>
+          <div class="meta">
+            <span class="tag" id="price-tag"></span>
+            <span class="tag mono" id="code-tag"></span>
+            <span class="tag" id="status-tag"></span>
+          </div>
+        </div>
+        <div class="mobile-only">
+          <button class="icon-btn theme-toggle" type="button" aria-label="Cambiar tema"></button>
+          <button class="icon-btn leave-btn" type="button" aria-label="Salir del grupo" data-icon="logout"></button>
+        </div>
+      </header>
+
+      <section class="panel active" id="tab-grupo"></section>
+      <section class="panel" id="tab-perfil"></section>
+      <section class="panel" id="tab-amigo"></section>
+    </div>
+  </div>
+
+  <div id="view-loading" class="view loading">
+    <div class="skeleton" style="width:220px;height:28px"></div>
+    <div class="skeleton" style="width:320px;height:16px"></div>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="catalog.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
