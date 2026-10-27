@@ -190,7 +190,10 @@ input::placeholder { color: var(--muted); opacity: .75; }
   border-radius: var(--radius);
 }
 .tag.accent { color: var(--purple); background: rgba(92, 45, 145, .10); }
-:root[data-theme="dark"] .tag.accent { color: #C3A6E8; }
+:root[data-theme="dark"] .tag.accent { color: #C3A6E8; background: rgba(195, 166, 232, .14); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .tag.accent { color: #C3A6E8; background: rgba(195, 166, 232, .14); }
+}
 .tag.success { color: var(--success); background: var(--success-soft); }
 .tag.tiny { padding: 0 .4rem; font-size: .72rem; margin-right: .25rem; }
 
