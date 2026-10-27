@@ -1,0 +1,10 @@
+<resources>
+    <style name="AppTheme" parent="android:Theme.Material.NoActionBar">
+        <item name="android:colorPrimary">#2B88D8</item>
+        <item name="android:colorAccent">#2B88D8</item>
+        <item name="android:statusBarColor">#202020</item>
+        <item name="android:navigationBarColor">#202020</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+    <color name="background">#202020</color>
+</resources>

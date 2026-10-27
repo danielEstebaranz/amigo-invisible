@@ -34,6 +34,12 @@ function toast(msg) {
   toast._t = setTimeout(() => t.classList.remove("show"), 2600);
 }
 
+// Dentro de la app Android se usa el portapapeles nativo (la WebView no siempre lo permite).
+async function copyText(text) {
+  if (window.AndroidApp) return window.AndroidApp.copy(text);
+  await navigator.clipboard.writeText(text);
+}
+
 function readJson(key) {
   try { return JSON.parse(localStorage.getItem(key)); } catch (_) { return null; }
 }
@@ -64,6 +70,7 @@ const ICONS = {
   sparkles: '<path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>',
   crown: '<path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zM5 20h14"/>',
   clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
   wallet: '<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',
 };
 const icon = (name) =>
@@ -609,17 +616,20 @@ document.addEventListener("click", async (e) => {
 
   switch (el.dataset.action) {
     case "copy-link":
-      await navigator.clipboard.writeText(inviteUrl(session.code));
+      await copyText(inviteUrl(session.code));
       return toast("Enlace copiado");
-    case "share":
+    case "share": {
+      const text = `Únete a nuestro amigo invisible "${group.name}" (máx. ${group.priceLimit} €)`;
+      if (window.AndroidApp) return window.AndroidApp.share(group.name, `${text}: ${inviteUrl(session.code)}`);
       if (navigator.share) {
-        return navigator.share({ title: group.name, text: `Únete a nuestro amigo invisible (máx. ${group.priceLimit} €)`, url: inviteUrl(session.code) }).catch(() => {});
+        return navigator.share({ title: group.name, text, url: inviteUrl(session.code) }).catch(() => {});
       }
-      await navigator.clipboard.writeText(inviteUrl(session.code));
+      await copyText(inviteUrl(session.code));
       return toast("Enlace copiado");
+    }
     case "copy-access": {
       const token = btoa(unescape(encodeURIComponent(JSON.stringify(session))));
-      await navigator.clipboard.writeText(`${inviteUrl(session.code)}#acceso=${token}`);
+      await copyText(`${inviteUrl(session.code)}#acceso=${token}`);
       return toast("Enlace personal copiado. Guárdalo en privado");
     }
     case "draw":
@@ -696,6 +706,7 @@ function importAccessLink() {
   history.replaceState(null, "", location.pathname + location.search);
 }
 
+if (window.AndroidApp) document.documentElement.classList.add("in-app");
 hydrateIcons();
 applyTheme();
 importAccessLink();

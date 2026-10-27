@@ -1,0 +1,29 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "app.amigoinvisible"
+    compileSdk 36
+
+    defaultConfig {
+        applicationId "app.amigoinvisible"
+        minSdk 26
+        targetSdk 36
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            // APK para instalar directamente (fuera de Google Play): se firma con la clave de depuración local.
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}

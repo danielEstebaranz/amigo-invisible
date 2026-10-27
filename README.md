@@ -4,6 +4,16 @@ App web para organizar un amigo invisible en la que cada persona participa desde
 
 **En producción:** https://amigo-invisible-1w5pe.web.app
 
+## Descargas
+
+| Plataforma | Archivo | Notas |
+|---|---|---|
+| Android 8+ | [AmigoInvisible.apk](https://github.com/danielEstebaranz/amigo-invisible/releases/latest/download/AmigoInvisible.apk) | Permite «instalar apps de esta fuente» al abrirlo |
+| Windows 10/11 | [AmigoInvisible.exe](https://github.com/danielEstebaranz/amigo-invisible/releases/latest/download/AmigoInvisible.exe) | Sin instalación. Si sale SmartScreen: *Más información → Ejecutar de todas formas* |
+| iPhone, Mac y otros | [Abrir en el navegador](https://amigo-invisible-1w5pe.web.app) | En iPhone: *Compartir → Añadir a pantalla de inicio* |
+
+Página de descargas para compartir: https://amigo-invisible-1w5pe.web.app/descargar
+
 ## Cómo funciona
 
 1. **El organizador crea el grupo** con nombre y límite de precio, y comparte el enlace (WhatsApp, copiar o compartir).
@@ -29,8 +39,11 @@ Estilo Fluent (Segoe UI, acento `#0078D4`, sombras sutiles, tema claro y oscuro)
 - `public/app.js` – lógica, Firestore en tiempo real, cifrado y sorteo
 - `public/catalog.js` – catálogo de ideas de regalo y motor de recomendaciones
 - `public/firebase-config.js` – configuración pública del proyecto web
+- `public/descargar.html` – página de descargas
 - `firestore.rules` – reglas de seguridad de la base de datos
 - `firebase.json`, `.firebaserc` – configuración de Firebase Hosting
+- `android/` – app Android nativa (WebView a pantalla completa, compartir nativo, enlaces de invitación)
+- `desktop/` – lanzador de Windows (abre la app en ventana propia con Edge en modo aplicación) y generador de iconos
 
 ## Desarrollo y despliegue
 
@@ -40,3 +53,14 @@ Requiere [Firebase CLI](https://firebase.google.com/docs/cli) con sesión inicia
 firebase serve --only hosting     # probar en local
 firebase deploy                   # publicar web y reglas
 ```
+
+Compilar las apps (los archivos quedan en `dist/`):
+
+```powershell
+.\desktop\build.ps1                                  # AmigoInvisible.exe
+cd android; .\gradlew.bat assembleRelease            # app\build\outputs\apk\release\app-release.apk
+```
+
+La APK se firma con la clave de depuración local (`~/.android/debug.keystore`). Para publicar actualizaciones que se instalen encima de la versión anterior hay que compilarlas en el mismo equipo o usar la misma clave.
+
+Para publicar una versión nueva, sube los dos archivos a una Release de GitHub con los nombres `AmigoInvisible.apk` y `AmigoInvisible.exe`. Los enlaces de descarga apuntan siempre a la última Release.

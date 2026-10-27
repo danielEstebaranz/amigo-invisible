@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0078D4">
+  <title>Descargar Amigo Invisible</title>
+  <link rel="icon" href="icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="view-home" class="view">
+    <header class="home-top">
+      <a class="logo plain" href="/"><img src="icon-192.png" alt="" width="34" height="34">Amigo Invisible</a>
+      <a class="btn ghost sm" href="/">Abrir en el navegador</a>
+    </header>
+
+    <main class="downloads">
+      <section class="dl-intro">
+        <p class="eyebrow">Descargas</p>
+        <h1>Instala Amigo Invisible</h1>
+        <p class="lead">Es la misma app y el mismo grupo en todos los dispositivos. Elige la tuya o úsala directamente en el navegador, sin instalar nada.</p>
+      </section>
+
+      <section class="dl-grid">
+        <article class="card dl-card" id="dl-android">
+          <div class="dl-head">
+            <span class="dl-icon">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+            </span>
+            <div>
+              <h2>Android</h2>
+              <p class="muted small">APK · Android 8.0 o superior · 14 KB</p>
+            </div>
+            <span class="tag accent dl-badge" hidden>Recomendado para ti</span>
+          </div>
+          <a class="btn primary lg full" href="https://github.com/danielEstebaranz/amigo-invisible/releases/latest/download/AmigoInvisible.apk">Descargar APK</a>
+          <ol class="dl-steps">
+            <li>Abre el archivo descargado desde las notificaciones o desde <b>Descargas</b>.</li>
+            <li>Si Android lo pide, permite <b>instalar apps de esta fuente</b> para tu navegador.</li>
+            <li>Pulsa <b>Instalar</b> y abre <b>Amigo Invisible</b> desde tus apps.</li>
+          </ol>
+        </article>
+
+        <article class="card dl-card" id="dl-windows">
+          <div class="dl-head">
+            <span class="dl-icon">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            </span>
+            <div>
+              <h2>Windows</h2>
+              <p class="muted small">.exe · Windows 10 y 11 · sin instalación · 300 KB</p>
+            </div>
+            <span class="tag accent dl-badge" hidden>Recomendado para ti</span>
+          </div>
+          <a class="btn primary lg full" href="https://github.com/danielEstebaranz/amigo-invisible/releases/latest/download/AmigoInvisible.exe">Descargar .exe</a>
+          <ol class="dl-steps">
+            <li>Abre <b>AmigoInvisible.exe</b>. No hay que instalarlo: se abre en su propia ventana.</li>
+            <li>Si aparece «Windows protegió su PC», pulsa <b>Más información → Ejecutar de todas formas</b>. Sale porque la app no está firmada por una empresa.</li>
+            <li>Puedes moverlo al escritorio para tenerlo siempre a mano.</li>
+          </ol>
+        </article>
+
+        <article class="card dl-card dl-web">
+          <div class="dl-head">
+            <span class="dl-icon">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/></svg>
+            </span>
+            <div>
+              <h2>iPhone, Mac o cualquier navegador</h2>
+              <p class="muted small">Sin descargas</p>
+            </div>
+          </div>
+          <p class="muted">Abre <a href="/">amigo-invisible-1w5pe.web.app</a>. En iPhone, pulsa <b>Compartir → Añadir a pantalla de inicio</b> para tenerla como una app más.</p>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Destaca la descarga que corresponde al dispositivo actual.
+    const ua = navigator.userAgent;
+    const id = /Android/i.test(ua) ? "dl-android" : /Windows/i.test(ua) ? "dl-windows" : null;
+    if (id) {
+      const card = document.getElementById(id);
+      card.classList.add("dl-recommended");
+      card.querySelector(".dl-badge").hidden = false;
+      card.parentElement.prepend(card);
+    }
+  </script>
+</body>
+</html>
